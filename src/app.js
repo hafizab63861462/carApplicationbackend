@@ -3,6 +3,7 @@ require('dotenv').config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const MongoDb = require("./plugins/mongoConnection").MongoDb;
+const controllers = require('./controller/index')(MongoDb);
 
 
 async function initServer() {
@@ -14,6 +15,7 @@ async function initServer() {
     bodyParser.json(),
   );
 
+  app.use('/api', controllers.auth);
 
   app.use((req, res) => {
     res.send("Server start successfully")
