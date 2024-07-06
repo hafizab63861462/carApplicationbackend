@@ -15,7 +15,12 @@ module.exports = (MongoDb) => {
       if (!isValid) {
         return res.status(401).send({ message: 'Invalid email or password' });
       }
-      res.send({ message: 'Login successful' });
+
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: '1h',
+      });
+
+      res.send({ message: 'Login successful', token });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: 'Error logging in' });
