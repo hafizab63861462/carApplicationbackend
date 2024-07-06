@@ -12,10 +12,11 @@ async function initServer() {
 
   app.use(
     cors(),
-    bodyParser.json(),
+    bodyParser.json({ limit: '10mb' }),
   );
 
   app.use('/api', controllers.auth);
+  app.use('/api', controllers.car);
 
   app.use((req, res) => {
     res.send("Server start successfully")
