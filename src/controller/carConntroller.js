@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -24,7 +22,7 @@ module.exports = (MongoDb) => {
 
       const files = req.files;
 
-      const car = new MongoDb.Car({ car_model, price, phone, city, number_of_pics });
+      const car = new MongoDb.Car({ car_model, price, phone, city, number_of_pics, images: files });
       await car.save();
 
       res.send({ message: 'car added' });
