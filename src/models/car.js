@@ -6,7 +6,7 @@ const carSchema = new Schema({
   price: { type: Number, required: true },
   phone: { type: Number, required: true },
   city: { type: String, required: true },
-  images: [{ type: String }],
+  images: [{ type: JSON }],
 });
 
 module.exports = carSchema;
