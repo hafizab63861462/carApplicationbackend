@@ -6,10 +6,14 @@ const path = require('path');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/")
+    const uploadPath = path.resolve('uploads');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
-    const imageName = Date.now() + file.originalname
+    const imageName = Date.now() + '-' + file.originalname;
     cb(null, imageName);
   },
 });
@@ -20,8 +24,6 @@ module.exports = (MongoDb) => {
   router.post('/addCar', upload.array("image"), async (req, res) => {
     try {
       const { car_model, price, phone, city, number_of_pics } = req.body;
-
-
       const files = req.files;
 
       const dataUrls = files.map(file => {
@@ -36,7 +38,7 @@ module.exports = (MongoDb) => {
       res.send({ message: 'car added' });
     } catch (error) {
       console.error(error);
-      res.status(500).send({ message: 'Error logging in' });
+      res.status(500).send({ message: 'Error adding car' });
     }
   });
 
